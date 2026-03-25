@@ -1,0 +1,44 @@
+from tkinter import *
+from random import *
+
+NbRow = 24  # 25
+NbColumn = 39  # 40
+
+root = Tk()
+root.title("Bac à sable")
+# root.geometry("850x550") # 
+
+#  800 + 25*2
+#  500 + 25*2
+# 
+
+
+# root.columnconfigure((0,1), weight=1)
+# root.rowconfigure((0,1), weight=1)
+
+canvas1 = Canvas(root, width=800, height=500, bg="light yellow", highlightthickness=2, highlightbackground="black", bd=0)
+canvas1.grid(column=0,row=0, padx=25, pady=25)
+
+canvas2 = Canvas(root, width=800, height=170, bg="light yellow", highlightthickness=2, highlightbackground="black", bd=0)
+canvas2.grid(column=0,row=2, padx=25, pady=25)
+
+
+### création des differents patterns
+
+pattern11 = [0,0,0, 1,1,1, 0,0,0]
+pattern12 = [0,1,0, 0,1,0, 0,1,0]
+
+pattern21 = [0,0,0, 0,1,1, 0,1,0]
+pattern22 = [0,1,0, 0,1,1, 0,0,0]
+pattern23 = [0,1,0, 1,1,0, 0,0,0]
+pattern24 = [0,0,0, 1,1,0, 0,1,0]
+
+pattern31 = [0,0,0, 1,1,1, 0,1,0]
+pattern32 = [0,1,0, 0,1,1, 0,1,0]
+pattern33 = [0,1,0, 1,1,1, 0,0,0]
+pattern34 = [0,1,0, 1,1,0, 0,1,0]
+
+pattern4 = [0,1,0, 1,1,1, 0,1,0]
+
+listePattern = [pattern11,pattern12, pattern21,pattern22,pattern23,pattern24, pattern31,pattern32,pattern33,pattern34, pattern4]
+
