@@ -9,10 +9,7 @@ class Cellule :
 
     listeIdCentreGroupe = [] # les IDs
 
-    #### zone de test ####
-    pat = 0
-    listeSuivantes = []
-    #### fin de zone ####
+
 
     def __init__(self, coA, coB, column,row, canvName):
         
@@ -35,6 +32,7 @@ class Cellule :
         self.coB = coB
 
         self.etatPat = 0
+        self.pat = None
 
         self.rec = self.canv.create_rectangle(coA, coB, coA+20, coB+20, fill='black', outline="grey")
         # self.canv.create_text(self.coA+10, self.coB+10, text=self.id, fill="white")
@@ -44,7 +42,6 @@ class Cellule :
             if (self.column-1) % 3 == 0 and self.column < NbColumn:
                 if (self.row-1) % 3 == 0 and self.row >= 0:
                     Cellule.listeIdCentreGroupe.append(self.id)
-                    
                     canvas1.itemconfig(self.rec, fill="dark blue")
 
         self.canv.tag_bind(self.rec, "<Button-1>", self.clicG)  # pour le clic gauche
@@ -133,6 +130,7 @@ class Cellule :
 
         # pattern = listePattern[3]
         pattern = listePattern[randrange(0,10)]
+        self.pat = pattern
 
         listeVoisines = self.voisinesID() # la liste des voisines
 
@@ -154,7 +152,7 @@ class Cellule :
         for id in voisinesG:
             cel = Cellule.listeCellulesCanv1[id]
 
-            if cel.etatPat == 0 and cel not in Cellule.listeSuivantes:
+            if cel.etatPat == 0 and cel not in Suivantes:
                 Suivantes.append(cel)
 
         for cel in Suivantes:
@@ -169,7 +167,17 @@ class Cellule :
 
         VoisineGroupe = self.voisinesIDGroupe()
 
+        listeVoisineGroupe = self.voisinesIDGroupe()
+        newListeVoisine = []
 
+
+        for id in listeVoisineGroupe:
+            cel = Cellule.listeCellulesCanv1[id]
+
+            if cel.etatPat != 0:
+                newListeVoisine.append(cel) # seulement les voisines avec un pattern déjà dessiné (carrément les cellules)
+            else:
+                newListeVoisine.append(None)
 
 
 
