@@ -9,10 +9,10 @@ class Cellule :
 
     listeIdCentreGroupe = [] # les IDs
 
+    #### zone de test ####
     pat = 0
-
     listeSuivantes = []
-
+    #### fin de zone ####
 
     def __init__(self, coA, coB, column,row, canvName):
         
@@ -47,18 +47,11 @@ class Cellule :
                     
                     canvas1.itemconfig(self.rec, fill="dark blue")
 
-        # self.canv.create_text(self.coA+10, self.coB+10, text=self.row, fill="white")
-
-        # canvas.tag_bind(self.rec, "<Button-1>", self.clicG) 
-        # canvas.tag_bind(self.rec, "<Button-3>", self.clicD)
-        self.canv.focus_set()                                  # pour le clavier
-        self.canv.bind("<Key>", self.clavier)                  # idem
-        #canvas.bind("<KeyPress>", self.clavier)                  # idem
         self.canv.tag_bind(self.rec, "<Button-1>", self.clicG)  # pour le clic gauche
         self.canv.tag_bind(self.rec, "<Button-3>", self.clicD)  # pour le clic gauche
         
 
-    ###### Les Voisines Id ######
+   
 
     def get_id (self):
         return self.id 
@@ -73,7 +66,6 @@ class Cellule :
         return self.row
 
     def set_etat (self):  
-    
         if self.get_etat() == 0:
             self.etat = 1
             self.canv.itemconfig(self.rec, fill="light green") 
@@ -88,8 +80,6 @@ class Cellule :
         myId = self.get_id()
         myColumn = self.get_column()
         
-        # idVoisines = [NbColumn-1, NbColumn, NbColumn+1, -1, 1, (-NbColumn)-1, (-NbColumn), (-NbColumn)+1]   # en réalité ce id voisine  = ces_valeurs + self.id
-
         idVoisines = [(-NbColumn)-1, (-NbColumn), (-NbColumn)+1, -1, 0, 1, NbColumn-1, NbColumn, NbColumn+1 ]   # en réalité ce id voisine  = ces_valeurs + self.id
 
 
@@ -105,125 +95,89 @@ class Cellule :
 
         listeVoisinesID = []
 
-        # for i in (idVoisines):          # ne prendre que celle qui figure dans la liste (ne dépasse ni en haut ni en bas)
-        #     if 0 <= myId + i < len(Cellule.listeCellulesCanv1): # refaire cette fonction en fonctin des differents canvas
-        #         listeVoisinesID.append(myId+i)
-
-        for i in (idVoisines):
+        for i in (idVoisines):  # ne dépasse ni en haut ni en bas 
             if myId+i >= 0 and myId+i < len(Cellule.listeCellulesCanv1):
                 listeVoisinesID.append(myId+i)
-
 
         return listeVoisinesID
 
 
-    #### création des groupes de cellules (carré 3x3) ####
-
-
-    def voisinesIDGroupe (self):    # renvoi la liste des voisines directes des groupe de 3x3 # et on part du principe pour le moment qu'on fait partie de la liste des groupe ID, on est un centre quoi
+    def voisinesIDGroupe (self):    # renvoie la liste des voisines directes des groupes de 3x3 # et on part du principe pour le moment qu'on fait partie de la liste des groupe ID, on est un centre quoi
         global NbColumn
 
-        idVoisinesGroupe = []  
+        idVoisinesGroupe = []  # liste que l'on va renvoyer
+
         myCol = self.get_column()
         groupe = Cellule.listeIdCentreGroupe    # liste d'ID
         myIdName = self.get_id()                # ID dans la liste de toute les cellules
         myIdGroupe = groupe.index(myIdName)     # ID dans la liste du groupe
 
-        presId = [(-NbColumn)//3, NbColumn//3, -1, 1]       # haut , bas,  gauche, droite
+        presId = [(-NbColumn)//3, NbColumn//3, -1, 1]       # haut , bas, gauche, droite
 
-        if myCol+2 == NbColumn:
+        if myCol+2 == NbColumn: # si trop à droite
             del presId[-1]
-            #print("trop à droite")
 
-        if myCol-1 == 0:
+        if myCol-1 == 0:        # si trop à gauche
             del presId[2]
-            #print("trop à gauche")
 
         for i in presId: 
-            if myIdGroupe+i >= 0 and myIdGroupe+i < len(self.listeIdCentreGroupe): # c'est incompressible incompressible incompressible
-                idVoisinesGroupe.append(groupe[myIdGroupe+i])
-
-        # for i in presId:
-        #     if 0 <= myIdGroupe+i < len(Cellule.listeIdCentreGroupe): ## nan mais serieux je ne comprend pas cette ligne je n'en veux plus !!
-        #         idVoisinesGroupe.append(groupe[myIdGroupe+i])
-
-        # for i in (idVoisines):
-        #     if 0 <= myId + i < len(Cellule.listeCellules):
-        #         listeVoisinesID.append(myId+i)
-
-        # for i in presId:
-            # varId = myIdGroupe+i            # new ID de la liste de groupe
-            # varVal = groupe[varId]          # on prend la valeur de la liqte de groupe
-            # idVoisinesGroupe.append(varVal) # on l'ajoute à la liste 
-
+            if myIdGroupe+i >= 0 and myIdGroupe+i < len(self.listeIdCentreGroupe): # si dépasse de la liste
+                idVoisinesGroupe.append(groupe[myIdGroupe+i])  
 
         return idVoisinesGroupe
-    
 
-    def DessinerPattern(self, idPat):
+
+    def DessinerPattern(self):
         global listePattern
-        listeVoisines = self.voisinesID()  # juste des ids des voisines
-        pattern = listePattern[idPat]
+        self.etatPat = 1
 
-        for i in listeVoisines:
-            if pattern[listeVoisines.index(i)] == 1:
-                cel = Cellule.listeCellulesCanv1[i]
+        # pattern = listePattern[3]
+        pattern = listePattern[randrange(0,10)]
+
+        listeVoisines = self.voisinesID() # la liste des voisines
+
+        for idV in listeVoisines:
+            indexID = listeVoisines.index(idV)
+            if pattern[indexID] == 1:
+                cel = Cellule.listeCellulesCanv1[idV]
                 cel.set_etat()
-
 
 
     def DessinerTout(self):
-        global listePattern
-        listeVoisines = self.voisinesID()  # juste des ids des voisines
 
-        self.etatPat = 1
+        self.DessinerPattern()
 
-        pattern = listePattern[randrange(0,10)]
+        voisinesG = self.voisinesIDGroupe()
 
-        for i in listeVoisines:
-            if pattern[listeVoisines.index(i)] == 1:
-                cel = Cellule.listeCellulesCanv1[i]
-                cel.set_etat()
+        Suivantes = []
 
-        listeProchain = self.voisinesIDGroupe()
+        for id in voisinesG:
+            cel = Cellule.listeCellulesCanv1[id]
 
-        for j in listeProchain: # le probmème c'est que c'est exponentielle ?
-            cel = Cellule.listeCellulesCanv1[j]
+            if cel.etatPat == 0 and cel not in Cellule.listeSuivantes:
+                Suivantes.append(cel)
+
+        for cel in Suivantes:
             if cel.etatPat == 0:
-                # Cellule.listeSuivantes.append(cel)
-                cel.DessinerTout()
+                cel.etatPat = 1
+                root.after(500, cel.DessinerTout)
+                # cel.DessinerTout()
+
+        # Suivantes.clear()
         
+    def PredirPattern (self):
+
+        VoisineGroupe = self.voisinesIDGroupe()
+        
+
+
 
 
     def clicG (self, event):
-
-        if self.get_id() in Cellule.listeIdCentreGroupe:
+        
+        if self.get_id() in Cellule.listeIdCentreGroupe:  # si la cellule est un centre de groupe
             self.DessinerTout()
 
-            # self.DessinerPattern(Cellule.pat)
-        # listeVoisineID = self.voisinesID()
-        # for i in listeVoisineID:
-        #     cel = Cellule.listeCellulesCanv1[i]
-            
-        #     # canvas1.itemconfig(cel.rec, fill="blue")
-        # print(listeVoisineID)
-
-        # self.set_etat()
-
-        # if self.get_id() in Cellule.listeIdCentreGroupe:
-        #     # self.DessinerPattern()
-        #     for i in self.voisinesIDGroupe():
-        #         cel = Cellule.listeCellulesCanv1[i]
-        #         canvas1.itemconfig(cel.rec, fill="orange")
-        # else:
-        #     print("n'est pas un centre de groupe")
-
-        
     def clicD (self, event):
-        print("il y a eu un clic droit")   
-        
-    def clavier (self, event):
-        touche = event.keysym
-        print("il y a eu une touche pressé : ", touche)
-
-        
+        # self.set_etat() 
+        self.DessinerPattern() 

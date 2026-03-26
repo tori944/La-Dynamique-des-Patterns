@@ -5,7 +5,7 @@ NbRow = 24  # 25
 NbColumn = 39  # 40
 
 root = Tk()
-root.title("Bac à sable")
+root.title("La Dynamique des Patterns")
 # root.geometry("850x550") # 
 
 #  800 + 25*2
