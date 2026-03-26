@@ -10,11 +10,7 @@ root.title("La Dynamique des Patterns")
 
 #  800 + 25*2
 #  500 + 25*2
-# 
 
-
-# root.columnconfigure((0,1), weight=1)
-# root.rowconfigure((0,1), weight=1)
 
 canvas1 = Canvas(root, width=800, height=500, bg="light yellow", highlightthickness=2, highlightbackground="black", bd=0)
 canvas1.grid(column=0,row=0, padx=25, pady=25)
@@ -51,20 +47,35 @@ listePattern = [pattern11,pattern12, pattern21,pattern22,pattern23,pattern24, pa
 
 ## toujours Haut, Bas, Gauche, Droite
 
-prediction = [
+predictionDico = [
     {                                   # pattern 11
-        "N":[3, 4, 8],                  # 22, 23, 33
-        "S":[2, 5, 6],                  # 21, 24, 31  
-        "W":[2, 3, 6, 7, 8, 10, 0],     # 21, 22, 31, 32, 33, 4, 11
-        "E":[4, 5, 6, 8, 9, 19, 0]      # 23, 24, 31, 33, 34, 4, 11
+        0:[3, 4, 8],                  # 22, 23, 33
+        1:[2, 5, 6],                  # 21, 24, 31  
+        2:[2, 3, 6, 7, 8, 10, 0],     # 21, 22, 31, 32, 33, 4, 11
+        3:[4, 5, 6, 8, 9, 19, 0]      # 23, 24, 31, 33, 34, 4, 11
         
     },
     {                                   # pattern 12
-        "N":[2, 5, 6, 7, 9, 10, 1],     # 21, 24, 31, 32, 34, 4, 12
-        "S":[3, 4, 7, 8, 9, 10, 1],     # 22, 23, 32, 33, 34, 4, 12
-        "W":[4, 5, 9],                  # 23, 24, 34
-        "E":[2, 3, 7]                   # 21, 22, 32
+        0:[2, 5, 6, 7, 9, 10, 1],     # 21, 24, 31, 32, 34, 4, 12
+        1:[3, 4, 7, 8, 9, 10, 1],     # 22, 23, 32, 33, 34, 4, 12
+        2:[4, 5, 9],                  # 23, 24, 34
+        3:[2, 3, 7]                   # 21, 22, 32
        
     }
+]
+
+predictionListe = [
+    [                           #pattern 11
+        [3, 4, 8],
+        [2, 5, 6],
+        [2, 3, 6, 7, 8, 10, 0],
+        [4, 5, 6, 8, 9, 19, 0]
+    ],
+    [                           #pattern 12
+        [2, 5, 6, 7, 9, 10, 1],
+        [3, 4, 7, 8, 9, 10, 1],
+        [4, 5, 9],
+        [2, 3, 7]
+    ]
 ]
 

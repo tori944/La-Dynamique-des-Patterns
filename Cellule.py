@@ -158,14 +158,12 @@ class Cellule :
         for cel in Suivantes:
             if cel.etatPat == 0:
                 cel.etatPat = 1
-                root.after(500, cel.DessinerTout)
+                root.after(100, cel.DessinerTout)
                 # cel.DessinerTout()
 
         # Suivantes.clear()
         
     def PredirPattern (self):
-
-        VoisineGroupe = self.voisinesIDGroupe()
 
         listeVoisineGroupe = self.voisinesIDGroupe()
         newListeVoisine = []
@@ -174,7 +172,7 @@ class Cellule :
         for id in listeVoisineGroupe:
             cel = Cellule.listeCellulesCanv1[id]
 
-            if cel.etatPat != 0:
+            if cel.etatPat != 0 and (cel.pat == 0 or cel.pat == 1): 
                 newListeVoisine.append(cel) # seulement les voisines avec un pattern déjà dessiné (carrément les cellules)
             else:
                 newListeVoisine.append(None)
