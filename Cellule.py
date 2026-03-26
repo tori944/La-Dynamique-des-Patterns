@@ -168,7 +168,7 @@ class Cellule :
     def PredirPattern (self):
 
         VoisineGroupe = self.voisinesIDGroupe()
-        
+
 
 
 
@@ -179,5 +179,4 @@ class Cellule :
             self.DessinerTout()
 
     def clicD (self, event):
-        # self.set_etat() 
         self.DessinerPattern() 
