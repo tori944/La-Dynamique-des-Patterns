@@ -20,6 +20,8 @@ canvas2.grid(column=0,row=2, padx=25, pady=25)
 
 ### création des differents patterns
 
+# definie le pattern ligne par ligne
+
 # pattern11 = [0,0,0, 1,1,1, 0,0,0]
 # pattern12 = [0,1,0, 0,1,0, 0,1,0]
 
