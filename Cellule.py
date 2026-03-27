@@ -9,8 +9,6 @@ class Cellule :
 
     listeIdCentreGroupe = [] # les IDs
 
-
-
     def __init__(self, coA, coB, column,row, canvName):
         
         self.etat = 0
@@ -270,5 +268,6 @@ class Cellule :
     def clicD (self, event):
         # self.DessinerPattern() 
         if self.get_id() in Cellule.listeIdCentreGroupe:  # si la cellule est un centre de groupe
-            self.PredictionPattern()
+            # self.PredictionPattern()
             # print("la solution ::: ", self.PredictionPattern())
+            self.DessinerPattern()

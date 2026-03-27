@@ -35,14 +35,16 @@ for j in range (11):
             cel.set_etat()
     var += 9
 
-def test ():
-    liste = Cellule.listeIdCentreGroupe
-    print(liste)
 
-
-def okPat ():
-    val = scaleVitesse.get()
-    Cellule.pat = val
+def Clear ():
+    for cel in Cellule.listeCellulesCanv1:
+        if cel.get_etat() == 1:
+            cel.set_etat()
+        
+        if cel.get_id() in Cellule.listeIdCentreGroupe:
+            canvas1.itemconfig(cel.rec, fill="dark blue")
+            cel.etatPat = 0
+            cel.pat = None
 
 
 #### frame du haut ####
@@ -52,16 +54,16 @@ frame2.grid(sticky=NS, padx=10, pady=10, column=1, row=0) # , rowspan=2
 
 frame2.rowconfigure([0,1,2,3], weight=1)
 
-btn5 = Button(frame2, text="5",font=("",15), command=test) # , command=Cellule.groupe, command=test
+btn5 = Button(frame2, text="5",font=("",15), ) 
 btn5.grid(column=0, row=0, padx=10)
 
-btn6 = Button(frame2, text="6", font=("",15))
+btn6 = Button(frame2, text="Clear", font=("",15), command=Clear)
 btn6.grid(column=0, row=1, padx=10)
 
 btn7 = Button(frame2, text="7", font=("",15))
 btn7.grid(column=0, row=2, padx=10)
 
-btn8 = Button(frame2, text="OK", font=("",15), command=okPat)
+btn8 = Button(frame2, text="OK", font=("",15), )
 btn8.grid(column=0, row=3, padx=10)
 
 scaleVitesse = Scale(frame2, from_=0, to=10, orient=HORIZONTAL, resolution=1)

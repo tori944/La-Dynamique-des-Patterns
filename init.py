@@ -66,7 +66,7 @@ listePattern = []
 model = [0,0,0, 2,1,3, 0,1,0]
 #model = [0,"N",0, "W",1,"E", 0,"S",0]
 
-compa = compatibilites[:-1] # liste des compatibilité moins le dernier
+compa = compatibilites[:-1] # liste des compatibilités moins le dernier
 
 for c in compa:
     pattern = []
