@@ -36,8 +36,10 @@ pattern34 = [0,1,0, 1,1,0, 0,1,0]
 
 pattern4 = [0,1,0, 1,1,1, 0,1,0]
 
-listePattern = [pattern11,pattern12, pattern21,pattern22,pattern23,pattern24, pattern31,pattern32,pattern33,pattern34, pattern4]
-###                 0           1       2           3       4           5           6       7           8       9           10
+pattern5 = [1,1,1, 1,1,1, 1,1,1] # pattern vide
+
+listePattern = [pattern11,pattern12, pattern21,pattern22,pattern23,pattern24, pattern31,pattern32,pattern33,pattern34, pattern4, pattern5]
+###                 0           1       2           3       4           5           6       7           8       9           10      11
 
 
 ### prediction des patterns en fonction des voisins
@@ -64,18 +66,34 @@ predictionDico = [
     }
 ]
 
-predictionListe = [
+predictionListe = [  ## bas / haut /  droite/ gauche /
     [                           #pattern 11
-        [3, 4, 8],
         [2, 5, 6],
+        [3, 4, 8],
+        [4, 5, 6, 8, 9, 19, 0],
         [2, 3, 6, 7, 8, 10, 0],
-        [4, 5, 6, 8, 9, 19, 0]
+        
     ],
     [                           #pattern 12
-        [2, 5, 6, 7, 9, 10, 1],
         [3, 4, 7, 8, 9, 10, 1],
+        [2, 5, 6, 7, 9, 10, 1],
+        [2, 3, 7],
         [4, 5, 9],
-        [2, 3, 7]
+        
     ]
 ]
 
+compatibilites = [
+    [0,0,1,1], # 0
+    [1,1,0,0], # 1
+    [0,1,0,1], # 2
+    [1,0,0,1], # 3
+    [1,0,1,0], # 4
+    [0,1,1,0], # 5
+    [0,1,1,1], # 6
+    [1,1,0,1], # 7
+    [1,0,1,1], # 8
+    [1,1,1,0], # 9
+    [1,1,1,1], # 10
+    [1,1,1,1], # 11 / pattern vide
+]

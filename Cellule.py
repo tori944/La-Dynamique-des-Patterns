@@ -2,7 +2,7 @@ from init import *
 from random import *
 
 class Cellule :
-    global NbColumn, NbRow, listePattern
+    global NbColumn, NbRow, listePattern, predictionListe, compatibilites
 
     listeCellulesCanv1 = []
     listeCellulesCanv2 = []
@@ -46,10 +46,7 @@ class Cellule :
 
         self.canv.tag_bind(self.rec, "<Button-1>", self.clicG)  # pour le clic gauche
         self.canv.tag_bind(self.rec, "<Button-3>", self.clicD)  # pour le clic gauche
-        
-
-   
-
+  
     def get_id (self):
         return self.id 
     
@@ -124,13 +121,98 @@ class Cellule :
         return idVoisinesGroupe
 
 
+
+    def PredictionPattern (self):
+        global compatibilites
+
+        listeVoisineGroupe = self.voisinesIDGroupe()    # ID des centres voisines
+        newListeVoisine = []                            # les num des patterns, none sinon (haut bas gauche droite)
+
+        for id in listeVoisineGroupe:                   # pour faire le trie de la nouvelle liste voisines (celles avec les paternes)
+            cel = Cellule.listeCellulesCanv1[id]
+
+            if cel.etatPat != 0: # si il y a un pattern
+                pat = cel.pat
+                newListeVoisine.append(pat) # 
+            else:
+                newListeVoisine.append(None)
+
+        scoreNone = 0
+
+        for i in newListeVoisine:
+            if i == None:
+                scoreNone += 1
+
+        pertendant = []
+
+        # if newListeVoisine == [None, None, None, None]:     # si pas de voisine avec un paterne
+        if scoreNone == 4:
+            print("pas de voisine")
+            return[0,1,2,3,4,5,6,7,8,9,10]
+            return("a")   ## trouver une manière de dire qu'il n'y a personne   
+ 
+        possibilites = []
+        indexSolution = [1, 0, 3, 2]  # pour la cellule Nord, on regarde ça valeur Sud, et vis-versa / poir la cellule West on regarde sa valeur Est et vis-versa / N, S, W, E 
+        
+        indexListe = 0
+        for i in newListeVoisine:       # pour la liste possibilités, exemple possibilités = [0, None, 1, None]
+            if i == None:
+                possibilites.append(None)
+            else:  
+                possibilites.append(compatibilites[i][indexSolution[indexListe]])  
+
+            indexListe += 1
+        
+        print("le nom des patterns : ", newListeVoisine)
+        # print("voici la liste des possibilitées : ", possibilites)
+        # print("score None : ", scoreNone)
+
+        if scoreNone == 0: # il y a une seule solution
+            print("il y a une seul solution : " )
+
+            if possibilites in compatibilites:
+                print("la voici : ", compatibilites.index(possibilites))
+                return([compatibilites.index(possibilites)])
+            else:
+                print("la voici : ", -1)  # aucune possibilitée
+                return([-1])
+
+
+        ## chercher celles qui correspondent ##
+
+        
+        pertendantName = []
+        newCompa = compatibilites[:-1]
+
+        for compa in newCompa:            # compa est une liste
+            point = 0
+            for j in range(4):
+                if possibilites[j] == None or possibilites[j] == compa[j]:
+                    point += 1
+
+            if point == 4:
+                pertendant.append(compa)
+                pertendantName.append(compatibilites.index(compa))
+            
+
+        print("voici le nom des pretendants : ", pertendantName)
+        # ²print("voici leur valeurs : ", pertendant)
+
+        if pertendantName == []: # il n'y a pas de possibilitée
+            return([-1])
+        else:
+            return(pertendantName)
+
+
     def DessinerPattern(self):
         global listePattern
         self.etatPat = 1
 
         # pattern = listePattern[3]
-        pattern = listePattern[randrange(0,10)]
-        self.pat = pattern
+        # pattern = listePattern[randrange(0,12)] 
+        
+        pattern = listePattern[choice(self.PredictionPattern())]
+        self.pat = listePattern.index(pattern) # ça marche bien par ce qu'il sont tous different, sinon c'est la cata
 
         listeVoisines = self.voisinesID() # la liste des voisines
 
@@ -139,14 +221,14 @@ class Cellule :
             if pattern[indexID] == 1:
                 cel = Cellule.listeCellulesCanv1[idV]
                 cel.set_etat()
+        
+        canvas1.create_text(self.coA+10, self.coB+10, text=self.pat, fill="green")
 
 
     def DessinerTout(self):
 
         self.DessinerPattern()
-
         voisinesG = self.voisinesIDGroupe()
-
         Suivantes = []
 
         for id in voisinesG:
@@ -162,27 +244,16 @@ class Cellule :
                 # cel.DessinerTout()
 
         # Suivantes.clear()
-        
-    def PredirPattern (self):
-
-        listeVoisineGroupe = self.voisinesIDGroupe()
-        newListeVoisine = []
-
-
-        for id in listeVoisineGroupe:
-            cel = Cellule.listeCellulesCanv1[id]
-
-            if cel.etatPat != 0 and (cel.pat == 0 or cel.pat == 1): 
-                newListeVoisine.append(cel) # seulement les voisines avec un pattern déjà dessiné (carrément les cellules)
-            else:
-                newListeVoisine.append(None)
-
-
 
     def clicG (self, event):
         
         if self.get_id() in Cellule.listeIdCentreGroupe:  # si la cellule est un centre de groupe
             self.DessinerTout()
+            # self.DessinerPattern() 
+            
 
     def clicD (self, event):
-        self.DessinerPattern() 
+        # self.DessinerPattern() 
+        if self.get_id() in Cellule.listeIdCentreGroupe:  # si la cellule est un centre de groupe
+            self.PredictionPattern()
+            print("la solution ::: ", self.PredictionPattern())
