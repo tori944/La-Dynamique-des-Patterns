@@ -104,19 +104,30 @@ class Cellule :
         myCol = self.get_column()
         groupe = Cellule.listeIdCentreGroupe    # liste d'ID
         myIdName = self.get_id()                # ID dans la liste de toute les cellules
-        myIdGroupe = groupe.index(myIdName)     # ID dans la liste du groupe
+        myIdGroupe = groupe.index(myIdName)     # ID dans la liste des groupe
 
         presId = [(-NbColumn)//3, NbColumn//3, -1, 1]       # haut , bas, gauche, droite
 
         if myCol+2 == NbColumn: # si trop à droite
-            del presId[-1]
+            presId[-1] = None
+            # del presId[-1]
+            # presId.append(None)
 
         if myCol-1 == 0:        # si trop à gauche
-            del presId[2]
+            # del presId[2]
+            presId[2] = None
 
         for i in presId: 
-            if myIdGroupe+i >= 0 and myIdGroupe+i < len(self.listeIdCentreGroupe): # si dépasse de la liste
-                idVoisinesGroupe.append(groupe[myIdGroupe+i])  
+            if i != None:
+
+                if myIdGroupe+i >= 0 and myIdGroupe+i < len(self.listeIdCentreGroupe): # si ne dépasse pas de la liste
+                    idVoisinesGroupe.append(groupe[myIdGroupe+i]) 
+                else:
+                    idVoisinesGroupe.append(None)
+
+            else:
+                idVoisinesGroupe.append(None)
+
 
         return idVoisinesGroupe
 
@@ -129,11 +140,14 @@ class Cellule :
         newListeVoisine = []                            # les num des patterns, none sinon (haut bas gauche droite)
 
         for id in listeVoisineGroupe:                   # pour faire le trie de la nouvelle liste voisines (celles avec les paternes)
-            cel = Cellule.listeCellulesCanv1[id]
+            if id != None:
+                cel = Cellule.listeCellulesCanv1[id]
 
-            if cel.etatPat != 0: # si il y a un pattern
-                pat = cel.pat
-                newListeVoisine.append(pat) # 
+                if cel.etatPat != 0: # si il y a un pattern
+                    pat = cel.pat
+                    newListeVoisine.append(pat) # 
+                else:
+                    newListeVoisine.append(None)
             else:
                 newListeVoisine.append(None)
 
@@ -147,9 +161,9 @@ class Cellule :
 
         # if newListeVoisine == [None, None, None, None]:     # si pas de voisine avec un paterne
         if scoreNone == 4:
-            print("pas de voisine")
+            # print("pas de voisine")
             return[0,1,2,3,4,5,6,7,8,9,10]
-            return("a")   ## trouver une manière de dire qu'il n'y a personne   
+            # return("a")   ## trouver une manière de dire qu'il n'y a personne   
  
         possibilites = []
         indexSolution = [1, 0, 3, 2]  # pour la cellule Nord, on regarde ça valeur Sud, et vis-versa / poir la cellule West on regarde sa valeur Est et vis-versa / N, S, W, E 
@@ -163,18 +177,18 @@ class Cellule :
 
             indexListe += 1
         
-        print("le nom des patterns : ", newListeVoisine)
+        # print("le nom des patterns : ", newListeVoisine)
         # print("voici la liste des possibilitées : ", possibilites)
         # print("score None : ", scoreNone)
 
         if scoreNone == 0: # il y a une seule solution
-            print("il y a une seul solution : " )
+            # print("il y a une seul solution : " )
 
             if possibilites in compatibilites:
-                print("la voici : ", compatibilites.index(possibilites))
+                # print("la voici : ", compatibilites.index(possibilites))
                 return([compatibilites.index(possibilites)])
             else:
-                print("la voici : ", -1)  # aucune possibilitée
+                # print("la voici : ", -1)  # aucune possibilitée
                 return([-1])
 
 
@@ -195,7 +209,7 @@ class Cellule :
                 pertendantName.append(compatibilites.index(compa))
             
 
-        print("voici le nom des pretendants : ", pertendantName)
+        # print("voici le nom des pretendants : ", pertendantName)
         # ²print("voici leur valeurs : ", pertendant)
 
         if pertendantName == []: # il n'y a pas de possibilitée
@@ -222,7 +236,7 @@ class Cellule :
                 cel = Cellule.listeCellulesCanv1[idV]
                 cel.set_etat()
         
-        canvas1.create_text(self.coA+10, self.coB+10, text=self.pat, fill="green")
+        # canvas1.create_text(self.coA+10, self.coB+10, text=self.pat, fill="green")
 
 
     def DessinerTout(self):
@@ -232,10 +246,11 @@ class Cellule :
         Suivantes = []
 
         for id in voisinesG:
-            cel = Cellule.listeCellulesCanv1[id]
+            if id != None:
+                cel = Cellule.listeCellulesCanv1[id]
 
-            if cel.etatPat == 0 and cel not in Suivantes:
-                Suivantes.append(cel)
+                if cel.etatPat == 0 and cel not in Suivantes:
+                    Suivantes.append(cel)
 
         for cel in Suivantes:
             if cel.etatPat == 0:
@@ -256,4 +271,4 @@ class Cellule :
         # self.DessinerPattern() 
         if self.get_id() in Cellule.listeIdCentreGroupe:  # si la cellule est un centre de groupe
             self.PredictionPattern()
-            print("la solution ::: ", self.PredictionPattern())
+            # print("la solution ::: ", self.PredictionPattern())
