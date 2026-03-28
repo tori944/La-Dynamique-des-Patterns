@@ -1,21 +1,39 @@
 from tkinter import *
 from random import *
 
+import tilesetLoader
+
 NbRow = 24  # 25
 NbColumn = 39  # 40
 
 root = Tk()
 root.title("La Dynamique des Patterns")
-# root.geometry("850x550") # 
+# root.geometry("850x550") #
 
 #  800 + 25*2
 #  500 + 25*2
 
-canvas1 = Canvas(root, width=800, height=500, bg="light yellow", highlightthickness=2, highlightbackground="black", bd=0)
-canvas1.grid(column=0,row=0, padx=25, pady=25)
+canvas1 = Canvas(
+    root,
+    width=800,
+    height=500,
+    bg="light yellow",
+    highlightthickness=2,
+    highlightbackground="black",
+    bd=0,
+)
+canvas1.grid(column=0, row=0, padx=25, pady=25)
 
-canvas2 = Canvas(root, width=800, height=170, bg="light yellow", highlightthickness=2, highlightbackground="black", bd=0)
-canvas2.grid(column=0,row=2, padx=25, pady=25)
+canvas2 = Canvas(
+    root,
+    width=800,
+    height=170,
+    bg="light yellow",
+    highlightthickness=2,
+    highlightbackground="black",
+    bd=0,
+)
+canvas2.grid(column=0, row=2, padx=25, pady=25)
 
 
 ### création des differents patterns
@@ -43,37 +61,22 @@ canvas2.grid(column=0,row=2, padx=25, pady=25)
 # ###                 0           1       2           3       4           5           6       7           8       9           10      11
 
 
-
-compatibilites = [
-    [0,0,1,1], # 0
-    [1,1,0,0], # 1
-    [0,1,0,1], # 2
-    [1,0,0,1], # 3
-    [1,0,1,0], # 4
-    [0,1,1,0], # 5
-    [0,1,1,1], # 6
-    [1,1,0,1], # 7
-    [1,0,1,1], # 8
-    [1,1,1,0], # 9
-    [1,1,1,1], # 10
-    [1,1,1,1], # 11 / pattern vide
-]
-
+compatibilites = tilesetLoader.charger_compatibilites("tilesets/default.csv")
 
 ### tentative de création des patterns avec le tableau de Compatibilité
 
 listePattern = []
-model = [0,0,0, 2,1,3, 0,1,0]
-#model = [0,"N",0, "W",1,"E", 0,"S",0]
+model = [0, 0, 0, 2, 1, 3, 0, 1, 0]
+# model = [0,"N",0, "W",1,"E", 0,"S",0]
 
-compa = compatibilites[:-1] # liste des compatibilités moins le dernier
+compa = compatibilites[:-1]  # liste des compatibilités moins le dernier
 
 for c in compa:
     pattern = []
     indexI = 0
     for i in model:
-        
-        if indexI%2 == 0: # paire
+
+        if indexI % 2 == 0:  # paire
             pattern.append(i)
         else:
             # val = c[indexI]
@@ -82,4 +85,4 @@ for c in compa:
         indexI += 1
     listePattern.append(pattern)
 
-listePattern.append([1,1,1, 1,1,1, 1,1,1])
+listePattern.append([1, 1, 1, 1, 1, 1, 1, 1, 1])
