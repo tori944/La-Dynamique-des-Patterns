@@ -2,8 +2,6 @@
 
 ﻿# La Dynamique des Patterns
 
-Alors là vraiment je galère ~(>_<。)＼
-
 Toujours avec mon tableau de cellules, je tente cette fois de paver l'espace avec des tuiles définies s'agençant selon certaines règles.
 
 
